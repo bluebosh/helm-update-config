@@ -61,7 +61,7 @@ getDownloadURL() {
   local version
   version=$(git -C "$HELM_PLUGIN_DIR" describe --tags --exact-match 2>/dev/null || true)
   if [ -n "$version" ]; then
-    DOWNLOAD_URL="https://github.com/${PROJECT_GH}/releases/download/${version}/helm-update-config_${OS}"
+    DOWNLOAD_URL="https://github.com/${PROJECT_GH}/releases/download/${version}/helm-update-config_${OS}_${ARCH}"
   else
     # Use the GitHub API to find the download url for this project.
     local url="https://api.github.com/repos/$PROJECT_GH/releases/latest"
@@ -79,9 +79,9 @@ downloadFile() {
   PLUGIN_TMP_FILE="/tmp/${PROJECT_NAME}"
   echo "Downloading $DOWNLOAD_URL"
   if type "curl" > /dev/null; then
-    curl -L "$DOWNLOAD_URL" -o "$PLUGIN_TMP_FILE"
+    curl -L "$DOWNLOAD_URL" -o "$PLUGIN_TMP_FILE" > /dev/null
   elif type "wget" > /dev/null; then
-    wget -q -O "$PLUGIN_TMP_FILE" "$DOWNLOAD_URL"
+    wget -q -O "$PLUGIN_TMP_FILE" "$DOWNLOAD_URL" > /dev/null
   fi
 }
 
